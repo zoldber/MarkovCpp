@@ -23,13 +23,21 @@ e.g. for the following corpus:
 the following dictionary is built:
 
 >> dict["i"      "] = { have       }
+>> 
 >> dict["have    "] = { a, a, two  } <- 2/3 chance of selecting "a" as next word, 1/3 chance of selecting "two"
+>> 
 >> dict["a       "] = { dog, boat  }
+>> 
 >> dict["dog     "] = {            } <- Terminal Word
+>> 
 >> dict["they    "] = { have       }
+>> 
 >> dict["boat    "] = {            } <- Terminal Word
+>> 
 >> dict["two     "] = { pencils    } 
+>> 
 >> dict["pencils "] = {            } <- Terminal Word
+>> 
 
 and the following chain might be generated:
 
