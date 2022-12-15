@@ -16,11 +16,12 @@ word = randChoose(dictionary[word].subsequent[])
 
 e.g. for the following corpus:
 
-"I have a dog."
-"They have a boat."
-"Have two pencils."
-
-the following dictionary is built:
+```txt
+I have a dog.
+They have a boat.
+Have two pencils.
+```
+the following dictionary is built (lower-case for all keys is intentional):
 
 |Dict. Key | Dict. Pointer  |
 |:--------:|:--------------:|
@@ -36,11 +37,9 @@ the following dictionary is built:
 
 and the following chain might be generated:
 
-"they" ➔ "have" ➔ "a" ➔ "dog"
+"they" ➔ "have" ➔ "a" ➔ "dog" ➔ /TERMINATE
 
-Note that for key "have", there's a 2/3 chance of selecting "a" as the subsequent word, and a 1/3 chance of selecting "two". In this example, the probability of word selection is based on word frequency in the list that's pointed to.
+Note that for key "have", there's a 2/3 chance of selecting "a" as the subsequent word, and a 1/3 chance of selecting "two". In this example, the probability of subsequent word selection is represented with word frequency in the list that's pointed to. This is intuitive but suboptimal for a few obvious reasons.
 
-Obviously these get more interesting for larger sentences and larger sets of sentences. They also tend to get
-incoherent unless the sentences are sourced similarly (e.g. each corpus should be a set of quotes, or poems, or
-bicycle advertisements, etc.)
+Word chains (meant to emulate sentences) get more interesting for larger sentences and larger sets of sentences. They also tend to get incoherent unless the sentences are sourced similarly (e.g. each corpus should be a set of quotes, or poems, or bicycle advertisements, etc.).
 
