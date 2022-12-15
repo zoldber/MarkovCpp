@@ -22,26 +22,23 @@ e.g. for the following corpus:
 
 the following dictionary is built:
 
->> dict["i"      "] = { have       }
->> 
->> dict["have    "] = { a, a, two  } <- 2/3 chance of selecting "a" as next word, 1/3 chance of selecting "two"
->> 
->> dict["a       "] = { dog, boat  }
->> 
->> dict["dog     "] = {            } <- Terminal Word
->> 
->> dict["they    "] = { have       }
->> 
->> dict["boat    "] = {            } <- Terminal Word
->> 
->> dict["two     "] = { pencils    } 
->> 
->> dict["pencils "] = {            } <- Terminal Word
->> 
+|Dict. Key | Dict. Pointer  |
+|:--------:|:--------------:|
+|"i"       | "have"         |
+|"have"    | "a", "a", "two"|
+|"a"       | "dog", "boat"  |
+|"dog"     | "."            |
+|"."       | /TERMINATE     |
+|"they"    | "have"         |
+|"boat"    | "."            |
+|"two"     | "pencils"      | 
+|"pencils" | "."            |
 
 and the following chain might be generated:
 
->> "they"->"have"->"a"->"dog"
+"they" ➔ "have" ➔ "a" ➔ "dog"
+
+Note that for key "have", there's a 2/3 chance of selecting "a" as the subsequent word, and a 1/3 chance of selecting "two". In this example, the probability of word selection is based on word frequency in the list that's pointed to.
 
 Obviously these get more interesting for larger sentences and larger sets of sentences. They also tend to get
 incoherent unless the sentences are sourced similarly (e.g. each corpus should be a set of quotes, or poems, or
