@@ -7,37 +7,49 @@ It's more of a fun experiment in maps and probability distributions than anythin
 
 - - -
 
-A basic Python prototype was written to serve as the simplest possible implementation of a Markov chain generator possible. A dictionary of words is created and for each word therein, a list is created. A subsequent word appearing more times in a list means a higher probability of it being selected when, in the chain-building loop, the following is called with an even probability distribution:
+A basic implementation of a Markov Chain generator is outlined below with string as the state type (hence, "word" and "state" are interchangeable in the following description). A set of initial states is created based on input data, and for each state therein, a list of subsequent states is created. A subsequent state appearing more times in a list means a higher probability of it being selected when, in the chain-building loop, the following is called with a normal p distribution:
 
-word = dictionary[word].randomFromList()
+```c++
 
-As an example, for the following corpus, the dictionary below is built, where lower-case letting in all dictionary keys is intentional:
+//... init. and choose starting state
+
+while (!classifier->isTerminal(currentState)) {
+
+  currentState = chooseNextState(stateSet[currentState.value].nextStates);
+  
+  chain.push_back(currentState);
+  
+}
+
+```
+
+As an example, for the following corpus, the dictionary below is built (lower-case lettering and spaced punctuation are intentional):
 
 ## corpus.txt
 ```txt
-  I have a dog.
-  They have a boat.
-  Have two pencils.
+  i have a dog .
+  they have a boat .
+  have two pencils .
 ```
 
 ## Chain-Building Dictionary
-|Dict. Key | Dict. Pointer  |
-|:--------:|:--------------:|
-|"i"       | "have"         |
-|"have"    | "a", "a", "two"|
-|"a"       | "dog", "boat"  |
-|"dog"     | "."            |
-|"."       | /TERMINATE     |
-|"they"    | "have"         |
-|"boat"    | "."            |
-|"two"     | "pencils"      | 
-|"pencils" | "."            |
+|State Value | State->nextStates    |
+|:----------:|:--------------------:|
+|"i"         | "have"(x1)           |
+|"have"      | "a"(x2), "two"(x1)   |
+|"a"         | "dog"(x1), "boat"(x1)|
+|"dog"       | "."(x1)              |
+|"."         | <end>                |
+|"they"      | "have"(x1)           |
+|"boat"      | "."(x1)              |
+|"two"       | "pencils"(x1)        | 
+|"pencils"   | "."(x1)              |
 
 
 Using the example above, the following chain might be generated:
 
-they ➔ have ➔ a ➔ dog ➔ /TERMINATE
+    they ➔ have ➔ a ➔ dog ➔ . ➔ <end>
 
-Note that for key "have", there's a 2/3 chance of selecting "a" as the subsequent word, and a 1/3 chance of selecting "two". In this example, the probability of subsequent word selection is represented with word frequency in the list that's pointed to. This is intuitive but suboptimal for a few obvious reasons.
+though terminal states (states with a value of "." in this example) need not have an empty state->nextStates list.
 
-Word chains (that, ideally, emulate sentences) get more interesting for longer sentences and larger sets of sentences. They also tend to get incoherent unless the sentences are sourced similarly (e.g. each corpus should be a set of quotes, or poems, or bicycle advertisements, etc.).
+Word chains (that, ideally, emulate sentences) get more interesting for longer state sequences and . They also tend to get incoherent unless the sentences are sourced similarly (e.g. each corpus should be a set of quotes, or poems, or advertisements, etc.).
