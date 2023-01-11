@@ -45,11 +45,7 @@ int main(int argc, char * argv[]) {
     /*(B)*/ //auto chain = gen->generate("_not_in_set_");
     /*(C)*/ auto chain = generator->generate();
 
-    for (auto state : chain) {
-
-        std::cout << state->value << " ";
-
-    }
+    for (auto state : chain) { std::cout << state->value << " "; }
 
     std::cout << std::endl;
 

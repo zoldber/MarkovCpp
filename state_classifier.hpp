@@ -52,7 +52,7 @@ namespace markov {
     }
 
     template < >
-    bool StateClassifier<long int>::isTerminal(State<long int> * state) {
+    bool StateClassifier<int>::isTerminal(State<int> * state) {
 
         if (state->nextStates.size()) {
             // Arbitrary place-holder condition.

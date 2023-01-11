@@ -69,6 +69,20 @@ namespace markov {
 
             }
 
+            std::vector<State<stateType> *> stateSpace(void) {
+
+                std::vector<State<stateType> *> allPossible;
+
+                for (auto state : this->stateSet->nextStates) {
+
+                    allPossible.push_back(state.second);
+
+                }
+
+                return allPossible;
+
+            }
+
             bool contains(stateType value) {
 
                 return this->stateSet->hasNextState(value);
@@ -184,9 +198,38 @@ namespace markov {
 
             }
 
+            void feed(std::vector<stateType> & input) {
+
+                if (input.size() < 1) return;
+
+                State<stateType> * currentState;
+
+                currentState = checkInSet(input.at(0));
+                this->stateSet->nextStateFrequencies[input.at(0)] += 1;
+
+                for (int i = 1; i < input.size(); i++) {
+
+                    if (!currentState->hasNextState(input.at(i))) {
+                        currentState->nextStates[input.at(i)] = checkInSet(input.at(i));
+                        currentState->nextStateFrequencies[input.at(i)] = 0;
+                    }
+
+                    currentState->nextStateFrequencies[input.at(i)] += 1;
+
+                    // Assign current state rover to next token, and so on.
+                    currentState = currentState->nextStates[input.at(i)];
+
+                }
+
+                return;
+
+            }
+
             std::vector<State<stateType> *> generateLen(const uint32_t maxLength) {
 
                 auto startingState = chooseNext(this->stateSet);
+
+                if (startingState == nullptr) return {};
 
                 return generateLen(startingState->value, maxLength);
 
@@ -213,6 +256,8 @@ namespace markov {
             std::vector<State<stateType> *> generate(void) {
 
                 auto startingState = chooseNext(this->stateSet);
+
+                if (startingState == nullptr) return {};
 
                 return generate(startingState->value);
 
